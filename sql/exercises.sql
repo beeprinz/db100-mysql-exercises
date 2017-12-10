@@ -73,10 +73,39 @@ SELECT * FROM customer WHERE active = false or last_name LIKE '%M';
 SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S' OR name LIKE '%T';
 
 # 3g. Select all columns minus the password column from the staff table for rows that contain a password.
+SELECT 
+staff_id,
+first_name,
+last_name,
+address_id,
+picture,
+email,
+store_id,
+active,
+username,
+last_update
+FROM
+staff
+WHERE
+password IS NOT null;
 
 
 # 3h. Select all columns minus the password column from the staff table for rows that do not contain a password.
-
+SELECT 
+staff_id,
+first_name,
+last_name,
+address_id,
+picture,
+email,
+store_id,
+active,
+username,
+last_update
+FROM
+staff
+WHERE
+password IS null;
 
 # ---------------------------------------------------------#
 
@@ -84,13 +113,33 @@ SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S
 ## 4. IN operator
 
 # 4a. Select the phone and district columns from the address table for addresses in California, England, Taipei, or West Java.
+SELECT
+phone,
+district
+FROM
+address
+WHERE
+district IN ('California','England','Taipei', 'West Java');
 
 
 # 4b. Select the payment id, amount, and payment date columns from the payment table for payments made on 05/25/2005, 05/27/2005, and 05/29/2005.
 # (Use the IN operator and the DATE function, instead of the AND operator as in previous exercises.)
-
+SELECT
+payment_id,
+amount,
+payment_date
+FROM
+payment
+WHERE
+DATE(payment_date) IN ('2005-5-25','2005-5-27','2005-5-29');
 
 # 4c. Select all columns from the film table for films rated G, PG-13 or NC-17.
+SELECT
+*
+FROM
+film
+WHERE
+rating IN ('G', 'PG-13', 'NC-17');
 
 
 # ---------------------------------------------------------#
@@ -99,7 +148,9 @@ SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S
 ## 5. BETWEEN operator
 
 # 5a. Select all columns from the payment table for payments made between midnight 05/25/2005 and 1 second before midnight 05/26/2005.
-
+SELECT *
+FROM payment
+WHERE payment_date BETWEEN '2005-05-25' AND '2005-05-26'; 
 
 # 5b. Select the following columns from the film table for films where the length of the description is between 100 and 120.
 #
@@ -109,6 +160,14 @@ SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S
 # release_year          Exists in film table.
 # total_rental_cost     rental_duration * rental_rate
 
+SELECT 
+title,
+description,
+release_year,
+rental_duration * rental_rate AS total_rental_cost
+FROM film
+WHERE length BETWEEN 100 AND 120;
+
 
 # ---------------------------------------------------------#
 
@@ -117,15 +176,39 @@ SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S
 
 # 6a. Select the following columns from the film table for rows where the description begins with "A Thoughtful".
 # Title, Description, Release Year
+SELECT
+title,
+description,
+release_year
+FROM
+film
+WHERE 
+description LIKE 'A Thoughtful%';
 
 
 # 6b. Select the following columns from the film table for rows where the description ends with the word "Boat".
 # Title, Description, Rental Duration
-
+SELECT
+title,
+description,
+rental_duration
+FROM
+film
+WHERE
+description LIKE '%Boat';
 
 # 6c. Select the following columns from the film table where the description contains the word "Database" and the length of the film is greater than 3 hours.
 # Title, Length, Description, Rental Rate
-
+SELECT
+title,
+length,
+description,
+rental_rate
+FROM
+film
+WHERE
+description Like 'Database' AND length > 180;
+-- WHERE description LIKE '%Database%' && length > 180;
 
 # ---------------------------------------------------------#
 
@@ -133,12 +216,26 @@ SELECT * FROM category WHERE category_id > 4 AND name LIKE '%C' OR name LIKE '%S
 ## 7. LIMIT Operator
 
 # 7a. Select all columns from the payment table and only include the first 20 rows.
+SELECT *
+FROM
+payment LIMIT 20;
 
 
 # 7b. Select the payment id, payment date and amount columns from the payment table for rows where the payment amount is greater than 5, and only select rows whose zero-based index in the result set is between 1000-2000.
+SELECT 
+payment_date,
+payment_id,
+amount
+FROM payment 
+WHERE amount > 5 
+LIMIT 1000 offset 2000;
 
 
 # 7c. Select all columns from the customer table, limiting results to those where the zero-based index is between 101-200.
+SELECT *
+FROM
+customer
+LIMIT 101 offset 200;
 
 
 # ---------------------------------------------------------#
